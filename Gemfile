@@ -46,6 +46,9 @@ end
 
 group :test do
   gem 'factory_bot_rails', '~> 4.0'
+  gem 'simplecov', require: false
+  gem 'simplecov-console', require: false
+  gem 'rubocop', '~> 0.59.2', require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
