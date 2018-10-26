@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Photo, type: :model do
   let!(:photo) { create(:photo) }
 
   it 'contains original and preview urls' do
-    expect(photo.original).not_to be_empty
-    expect(photo.preview).not_to be_empty
+    expect(photo.original_url).not_to be_empty
+    expect(photo.preview_url).not_to be_empty
   end
 
   it 'has the correct format' do
-    minimagick_image = MiniMagick::Image.new(photo.original)
+    minimagick_image = MiniMagick::Image.new(photo.original_url)
     expect(minimagick_image.mime_type).to eq('image/jpeg')
   end
 
@@ -21,18 +23,26 @@ RSpec.describe Photo, type: :model do
 
   context 'the preview version' do
     it 'scales down a photo to be exactly 600 by 600 pixels' do
-      minimagick_image = MiniMagick::Image.new(photo.preview)
+      minimagick_image = MiniMagick::Image.new(photo.preview_url)
       expect(minimagick_image.dimensions).to eq([600, 600])
     end
   end
 
   describe '.to_json' do
     it 'returns proper JSON structure' do
-      expect(photo.to_json).to eq(
+      worker = ExifWorker.new
+      worker.perform(photo)
+      expect(PhotoSerializer.new(photo).serialized_json).to eq(
         {
-          original_url: photo.original,
-          preview_url: photo.preview,
-          exif: ExifService.parse(photo.original)
+          data: {
+            id: photo.id.to_s,
+            type: 'photo',
+            attributes: {
+              original_url: photo.original_url,
+              preview_url: photo.preview_url,
+              exif: photo.exif
+            }
+          }
         }.to_json
       )
     end
