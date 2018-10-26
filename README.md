@@ -12,24 +12,43 @@ The simpliest way is to use [http](https://httpie.org/) command.
 
 ### Register user
 
-```
+HTTPie:
+``` bash
 http POST http://localhost:3000/auth/register <<<'{ "user": { "email": "test@test.com", "password": "12345678" }}'
+```
+
+curl:
+``` bash
+curl -H "Content-Type: application/json" --request POST --data '{ "user": { "email": "test@test.com", "password": "12345678" }}' http://localhost:3000/auth/register
 ```
 
 ### Get the token
 
+HTTPie:
 ``` bash
 http POST http://localhost:3000/user_token <<<'{ "auth": { "email": "test@test.com", "password": "12345678" }}'
 ```
 
+curl:
+``` bash
+curl -H "Content-Type: application/json" --request POST --data '{ "auth": { "email": "test@test.com", "password": "12345678" }}' http://localhost:3000/user_token
+```
+
 ### Upload a photo
 
+curl:
 ``` bash
-
+curl -F "photo[file]=@1.jpg;type=image/jpeg" "http://localhost:3000/api/photos" -H 'Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NDA2NDUwMTYsInN1YiI6Mn0.Yk6A_W1deio3Kc-UdLalj3dm8A5KQU3UWeU-vZJComU'
 ```
 
 ### Get photos
 
+HTTPie:
 ``` bash
 http GET http://localhost:3000/api/photos 'Authorization:Bearer your_jwt_token'
+```
+
+curl:
+``` bash
+curl http://localhost:3000/api/photos -H 'Authorization:Bearer your_jwt_token'
 ```
