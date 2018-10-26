@@ -54,13 +54,13 @@ describe 'Photos API', type: :request do
   end
 
   describe 'GET /api/photos' do
-    let!(:photos) { create_list(:photo, 3) }
+    let!(:photos) { create_list(:photo, 10) }
     let(:photo) { photos[0] }
     before { get '/api/photos', headers: authenticated_header }
 
     it 'returns photos' do
       expect(json).not_to be_empty
-      expect(json[:data].size).to eq(3)
+      expect(json[:data].size).to eq(Photo.per_page)
     end
 
     it 'returns status code 200' do
@@ -77,6 +77,10 @@ describe 'Photos API', type: :request do
           exif: photo.exif
         }
       )
+    end
+
+    it 'includes pagination link in headers' do
+      expect(response.headers).to include('Link')
     end
   end
 end

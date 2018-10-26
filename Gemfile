@@ -24,6 +24,8 @@ gem 'sidekiq'
 gem 'mini_magick', '~> 4.8'
 gem 'file_validators'
 gem 'exifr'
+gem 'will_paginate', '~> 3.1.0'
+gem 'api-pagination'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
