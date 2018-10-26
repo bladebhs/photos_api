@@ -16,7 +16,8 @@ RSpec.describe Photo, type: :model do
   end
 
   context 'when the size is more than 5 Mb' do
-    subject { Photo.new(remote_file_url: 'https://unsplash.com/photos/UhMYUFM1BYA/download?force=true') }
+    let(:image_url) { 'https://unsplash.com/photos/UhMYUFM1BYA' }
+    subject { Photo.new(remote_file_url: image_url) }
 
     it { is_expected.to be_invalid }
   end
@@ -25,26 +26,6 @@ RSpec.describe Photo, type: :model do
     it 'scales down a photo to be exactly 600 by 600 pixels' do
       minimagick_image = MiniMagick::Image.new(photo.preview_url)
       expect(minimagick_image.dimensions).to eq([600, 600])
-    end
-  end
-
-  describe '.to_json' do
-    it 'returns proper JSON structure' do
-      worker = ExifWorker.new
-      worker.perform(photo)
-      expect(PhotoSerializer.new(photo).serialized_json).to eq(
-        {
-          data: {
-            id: photo.id.to_s,
-            type: 'photo',
-            attributes: {
-              original_url: photo.original_url,
-              preview_url: photo.preview_url,
-              exif: photo.exif
-            }
-          }
-        }.to_json
-      )
     end
   end
 end
