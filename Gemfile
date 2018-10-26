@@ -19,6 +19,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'knock'
 # JSON API Serializer
 gem 'fast_jsonapi'
+gem 'sidekiq'
 
 gem 'mini_magick', '~> 4.8'
 gem 'file_validators'
