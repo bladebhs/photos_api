@@ -17,6 +17,8 @@ gem 'puma', '~> 3.11'
 gem 'bcrypt', '~> 3.1.7'
 # JWT authentication
 gem 'knock'
+# JSON API Serializer
+gem 'fast_jsonapi'
 
 gem 'mini_magick', '~> 4.8'
 gem 'file_validators'
