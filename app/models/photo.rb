@@ -3,11 +3,11 @@ class Photo < ApplicationRecord
 
   validates :file, file_size: { less_than_or_equal_to: 5.megabytes }
 
-  def original
+  def original_url
     file.url
   end
 
-  def preview
+  def preview_url
     file.preview.url
   end
 end
