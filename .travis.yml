@@ -1,26 +1,24 @@
-language: 
-  ruby
-
+language: ruby
+dist: trusty
+addons:
+  postgresql: '9.6'
+services:
+  - postgresql
 rvm:
   - 2.5.1
-
 env:
   global:
     - CC_TEST_REPORTER_ID=$CCKEY
-
-cache:
-  bundler
-
+    - secure: iaMY/dxMqzYnFKtsFnOC9pd+9SFWToUv5WL+EXVfV5BblOfEvrghgJ92NIIaMG/ryeFnd5XUhJEaiJSiIgfuw1U6OBr6iYelB2kGQe7Ex55wB2lcxirAr6QbeRZ4GNw6tt+78lkUFmCaPWWzfkLSJ3lgjUFTjwibnarsCQdFH47lioglYn8yU0VlD+0IYlMZFpoz9WL2H0yYa4XVe689TQCIBOe/NNyGICvg6vIAzhYpJ0/YgeMX1Cox1m/1mQbOFSOSjJIr8C2JGDYZMmGpYljM8f588qq/Xf38N36taAhxlWErdI5HAOlyzETVbF/o4+yngQyH6j6YcpXBgS8EgnTxzHChQH5S1q6aEGTuQZLoZCriSqyqyY5VfUKRy24lAiSPogOC9vUfWcxqxZ7ewobkKpi4PfVir6xeu5wRC7sfJRO8PQWn8lyxiSvwarmPqThamTaoa/x9nFRxmqOfLCygNPSJnt/1dEGxKTn4cjis3nvFPjRGYgMFvXudu1N7RWoNk05b11LePESYI71Cf3OoTA8yL97Vez5GYFPWi7vnkr1l6OEtSp1qrkzKDysJiG65RHTyJP62d9nEk5081eK/3Fl41R7/W0h+TcReeCi1yqEoYToVJ/xBWp1Wtk/axUAfRXFUptZL3K5raTZUpqec5e0znRl8omkTx7hDoNA=
+cache: bundler
 before_script:
   - cp config/database.yml.travis config/database.yml
   - bundle exec rails db:create
   - bundle exec rails db:migrate
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-
+  - "./cc-test-reporter before-build"
 script:
   - bundle exec rspec
-
 after_script:
-- ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
