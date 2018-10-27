@@ -7,7 +7,7 @@ RSpec.describe ExifWorker, type: :worker do
 
   it 'updates the exif field of photo' do
     worker = ExifWorker.new
-    worker.perform(photo)
+    worker.perform(photo.id)
     expect(photo.reload.exif).not_to be_empty
   end
 end

@@ -11,7 +11,7 @@ module Api
 
     def create
       photo = Photo.create!(photo_params)
-      ExifWorker.perform_async(photo)
+      ExifWorker.perform_async(photo.id)
       render json: photo, status: :created
     end
 
