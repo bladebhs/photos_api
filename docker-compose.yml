@@ -1,0 +1,41 @@
+version: '3.6'
+
+services:
+  web:
+    build: .
+    volumes:
+      - ./:/app
+      - ./config/database.yml.docker:/app/config/database.yml
+    working_dir: /app
+    command: puma
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://postgres@db
+  db:
+    image: postgres:10.3-alpine
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis_data:/bitnami/redis'
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    links:
+      - db
+      - redis
+    volumes:
+      - .:/app
+    environment:
+      REDIS_URL: redis://redis:6379/0
+
+volumes:
+  redis_data:
+    driver: local
