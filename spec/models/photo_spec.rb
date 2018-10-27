@@ -5,9 +5,10 @@ require 'rails_helper'
 RSpec.describe Photo, type: :model do
   let!(:photo) { create(:photo) }
 
-  it 'contains original and preview urls' do
-    expect(photo.original_url).not_to be_empty
-    expect(photo.preview_url).not_to be_empty
+  it 'contains correct urls' do
+    dir = photo.file.store_dir
+    expect(photo.original_url).to eq("#{dir}/#{photo.file.filename}")
+    expect(photo.preview_url).to eq("#{dir}/preview_#{photo.file.filename}")
   end
 
   it 'has the correct format' do
